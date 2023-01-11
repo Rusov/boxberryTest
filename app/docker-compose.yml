@@ -1,0 +1,22 @@
+version: '2'
+services:
+  boxberry-php:
+    image: yiisoftware/yii2-php:7.4-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app:delegated
+    ports:
+      - '8080:80'
+    depends_on:
+      - boxberry-db
+
+  boxberry-db:
+    container_name: boxberry-db
+    build: ../environment/docker/db
+    restart: on-failure
+    env_file:
+      - ../environment/docker/db/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../pgdata:/var/lib/postgres
