@@ -24,6 +24,10 @@ class PriceBulkUpdate
         $this->recreateTable = $recreateTable;
     }
 
+    /**
+     * @throws StaleObjectException
+     * @throws \Throwable
+     */
     public function run()
     {
         $mutex = new FileMutex();
@@ -31,7 +35,6 @@ class PriceBulkUpdate
         $unlockSeconds = 5;
 
         if ($mutex->acquire($mutexName, $unlockSeconds)) {
-
             //обновляем
             $this->checkTempTable();
 
